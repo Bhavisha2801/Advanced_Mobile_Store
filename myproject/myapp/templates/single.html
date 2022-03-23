@@ -1,0 +1,96 @@
+
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title  %}
+single
+{% endblock title  %}
+
+{% block body  %}
+
+        <main class="main">
+        	<div class="page-header text-center" style="background-image: url('{% static 'assets/images/page-header-bg.jpg' %}')">
+        		<div class="container">
+        			<h1 class="page-title">Default With Sidebar<span>Single Post</span></h1>
+        		</div><!-- End .container -->
+        	</div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Blog</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Default With Sidebar</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+                <div class="container">
+                	<div class="row">
+                		<div class="col-lg-9">
+                            <article class="entry single-entry">
+                                <figure class="entry-media">
+                                    <img src="{% static 'assets/images/blog/single/1.jpg' %}" alt="image desc">
+                                </figure><!-- End .entry-media -->
+
+                                <div class="entry-body">
+                                    <div class="entry-meta">
+                                        <span class="entry-author">
+                                            by <a href="#">John Doe</a>
+                                        </span>
+                                        <span class="meta-separator">|</span>
+                                        <a href="#">Nov 22, 2018</a>
+                                        <span class="meta-separator">|</span>
+                                        <a href="#">2 Comments</a>
+                                    </div><!-- End .entry-meta -->
+
+                                    <h2 class="entry-title">
+                                        Cras ornare tristique elit.
+                                    </h2><!-- End .entry-title -->
+
+                                    <div class="entry-cats">
+                                        in <a href="#">Lifestyle</a>,
+                                        <a href="#">Shopping</a>
+                                    </div><!-- End .entry-cats -->
+
+                                    <div class="entry-content editor-content">
+                                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti.</p>
+
+                                        <p>Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem at felis. Vestibulum volutpat, lacus a <a href="#">ultrices sagittis</a>, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna.</p>
+
+                                        <div class="pb-1"></div><!-- End .mb-1 -->
+
+                                        <img src="{% static 'assets/images/blog/single/2.jpg' %}" alt="image" class="float-left">
+
+                                        <h3>Quisque volutpat mattiseros. </h3>
+
+                                        <ul>
+                                            <li>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. </li>
+                                            <li>Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. </li>
+                                            <li>Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem at felis. Vestibulum volutpat, lacus a ultrices sagittis, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna.</li>
+                                        </ul>
+
+                                        <div class="pb-1 clearfix"></div><!-- End .clearfix -->
+
+                                        <p>Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula <a href="#">sollicitudin laoreet</a> viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem at felis. </p>
+
+                                        <blockquote>
+                                            <p>“ Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. ”</p>
+                                        </blockquote>
+
+                                        <p>Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem at felis. Vestibulum volutpat, lacus a ultrices sagittis, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna. Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a ullamcorper laoreet, lectus arcu pulvinar risus, vitae facilisis libero dolor a purus. </p>
+
+                                        <div class="pb-1"></div><!-- End .pb-1 -->
+
+                                        <h3>Morbi interdum mollis sapien.</h3>
+
+                                        <img src="{% static 'assets/images/blog/single/3.jpg' %}" alt="image">
+
+                                        <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. Praesent <a href="#">elementum hendrerit</a> tortor. Sed semper lorem at felis. Vestibulum volutpat, lacus a ultrices sagittis, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna.</p>
+
+                                        <p>Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a ullamcorper laoreet, lectus arcu pulvinar risus, vitae facilisis libero dolor a purus. Sed vel lacus. Mauris nibh felis, adipiscing varius, adipiscing in, lacinia vel, tellus. Suspendisse ac urna. Etiam pellentesque mauris ut lectus. Nunc tellus ante, mattis eget, gravida vitae, ultricies ac, leo. Integer leo pede, ornare a, lacinia eu, vulputate vel, nisl. Suspendisse mauris. Fusce accumsan mollis eros. Pellentesque a diam sit amet mi ullamcorper vehicula. Integer adipiscing risus a sem. Nullam quis massa sit amet nibh viverra malesuada. Nunc sem lacus, accumsan quis, faucibus non, congue vel, arcu. </p>
+                                    </div><!-- End .entry-content -->
+{% endblock body %}
+                                   

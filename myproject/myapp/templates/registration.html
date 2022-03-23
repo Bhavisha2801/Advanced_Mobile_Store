@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title  %}
+Registration
+{% endblock title  %}
+
+{% block body  %}
+
+        <main class="main">
+                       <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17" style="background-image: url('{% static 'assets/images/backgrounds/login-bg.jpg' %}')">
+            	<div class="container">
+            		<div class="form-box">
+            			<div class="form-tab">
+	            			<ul class="nav nav-pills nav-fill" role="tablist">
+							    <li class="nav-item">
+							        <span class="nav-link active">Register</span>
+							    </li>
+							</ul>
+							<div class="tab-content active">
+							    <div class="tab-pane active" id="signin-2" role="tabpanel">
+							    	<form method="post">
+                                        {% csrf_token %}
+                                        {{form | crispy}}
+                                        <button class="btn">Register</button>
+                                    </form>
+									<div class="mt-2">
+										Already have an account?
+										<a href="{% url 'login' %}" class="ml-2">Login</a>
+									  </div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+
+{% endblock body  %}						    		
