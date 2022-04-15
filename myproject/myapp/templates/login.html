@@ -9,7 +9,7 @@ login
 {% block body  %}
 
         <main class="main">
-                       <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17" style="background-image: url('{% static 'assets/images/backgrounds/login-bg.jpg' %}')">
+                       <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17" style="background-image: url('{% static 'assets/images/backgrounds/login-back.jpg' %}')">
             	<div class="container">
             		<div class="form-box">
             			<div class="form-tab">
@@ -20,6 +20,22 @@ login
 							</ul>
 							<div class="tab-content active">
 							    <div class="tab-pane active" id="signin-2" role="tabpanel">
+
+
+									{% if messages %}
+									{% for message in messages %}
+										<div class="container-fluid p-0">
+											<div class="alert {{ message.tags }} alert-dismissible" role="alert">
+												<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="True">&times;</span>
+												</button>
+													{{ message }}
+											</div>
+										</div>
+									{% endfor %}
+									{% endif %}
+
+
 							    	<form method="POST">
 										{% csrf_token %}
 							    		<div class="form-group">

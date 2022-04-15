@@ -1,13 +1,24 @@
-# import re
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
-from .form import AddressForm, UserCreateForm,PassChangeForm,PassChangeForm,UserProfileChangeForm,AddressForm
-from django.contrib import messages
+from requests import post
+from .form import AddressForm, UserCreateForm,PassChangeForm,PassChangeForm,UserProfileChangeForm,AddressForm,ContactForm
+# from django.contrib import messages
 from .models import ProductModel  #import
-from .models import ProductModel,MainCategoryModel,SubCategoryModel,Cart,Address,Myorder
+from .models import ProductModel,MainCategoryModel,SubCategoryModel,Cart,Address,Myorder,Contact
+from django.conf import settings 
+from django.core.mail import send_mail
+from django.contrib import messages
+
+
+
+# key id - rzp_test_uqhoYnBzHjbvGF
+# key secret - jEhBs6Qp9hMeGfq5FyU45cVi
 
 # Create your views here.
 from .form import UserCreateForm
+
+import razorpay
+
 
 
 def logoutUser(request):
@@ -33,11 +44,8 @@ def registration(request):
         form = UserCreateForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,'😃 Registration Successfully Done')
             return redirect("/login")
-        else:
-            return redirect("register")
-    else:
-        form = UserCreateForm()
     con = {'form':form}
     return render(request,"registration.html",con)
 
@@ -81,13 +89,28 @@ def ProfileView(request):
         messages.info(request, '☹︎ Please Login First')
         return redirect('/login/')
 
-
-
-
 def index(request):
     all = ProductModel.objects.all()[:5]
-    cat = MainCategoryModel.objects.all()
-    con = {'all':all,'cat':cat}
+    cat = SubCategoryModel.objects.all()
+    list1 = []
+    sub_total = 0
+    shipping_total = 0
+    
+    if request.user.is_authenticated:
+        prod = Cart.objects.filter(user=request.user)
+        count = Cart.objects.filter(user=request.user).count()
+        for x in prod:
+            z = x.product.sell_price * x.quantity
+            list1.append(z)
+            sub_total = sum(list1)
+            shipping_total = sub_total + 70
+    else:
+        prod = "hello"
+        count = 0
+
+    
+
+    con = {'all':all,'prod':prod,'sub_total':sub_total,'shipping_total':shipping_total,'cat':cat,"count":count}
     return render(request,"index.html",con)
 
 def bloggrid(request):
@@ -96,12 +119,13 @@ def bloggrid(request):
 def blog(request):
     return render(request,"blog.html")    
 
-
-
-
 def cart(request):
+    cat = SubCategoryModel.objects.all()
+
     if request.user.is_authenticated:
         prod = Cart.objects.filter(user=request.user)
+        count = Cart.objects.filter(user=request.user).count()
+
         list1 = []
         sub_total = 0
         shipping_total = 0
@@ -110,25 +134,59 @@ def cart(request):
             list1.append(z)
             sub_total = sum(list1)
             shipping_total = sub_total + 70
-        con = {'prod':prod,'sub_total':sub_total,'shipping_total':shipping_total}
+        con = {'prod':prod,'sub_total':sub_total,'shipping_total':shipping_total,'cat':cat,"count":count}
         return render(request,"cart.html",con)
     else:
         return redirect("login")
-
-
 
 def single(request):
     return render(request,"single.html")
 
 def category(request):
-    all_prod = ProductModel.objects.all()
-    con = {'all_prod':all_prod}
+    cat = SubCategoryModel.objects.all
+    cid=request.GET.get("cid")
+    mid = request.GET.get("mid")
+    mcate = MainCategoryModel.objects.all()
+    count = Cart.objects.filter(user=request.user).count()
+    prod = Cart.objects.filter(user=request.user).order_by('id')
+
+    list1=[]
+    sub_total=1
+    shipping_total = 1
+    for x in prod:
+        z=x.product.sell_price * x.quantity
+        list1.append(z)
+        sub_total = sum(list1)
+        shipping_total = sub_total + 70
+
+    if cid:
+        all_prod = ProductModel.objects.filter(scate_id=cid)
+    elif mid:
+        all_prod = ProductModel.objects.filter(mcate_id=mid)    
+    else:
+        all_prod=ProductModel.objects.all()    
+    con = {'all_prod':all_prod,'cat':cat,'prod':prod,'sub_total':sub_total,'shipping_total':shipping_total,'count':count,'mcate':mcate}
+
     return render(request,"category.html",con)
 
-   
-
 def contact(request):
-    return render(request,"contact.html")
+    form = ContactForm()
+    if request.method == "POST":
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            x = form.save(commit=False)
+            x.user = request.user
+            x.save()
+            messages.success(request,'😃 Contact Successfully Submitted')
+            return redirect("contact")
+        else:
+            return redirect("contact")   
+    else:
+        pass
+    con = {'form':form}         
+    return render(request,"contact.html",con)
+
+
 
 def wishlist(request):
     return render(request,"wishlist.html")
@@ -139,17 +197,11 @@ def dashboard(request):
 def pcbox(request):   
     return render(request,"pcbox.html")
 
-
-
-
-
 def product(request,id):
     single = ProductModel.objects.get(id=id)
     con ={'single':single}
     
     return render(request,"product.html",con)
-
-
 
 def Add_to_cart(request,id):
     if request.user.is_authenticated:
@@ -168,15 +220,11 @@ def Add_to_cart(request,id):
     else:
         return redirect("login")
 
-
-
 def cart_remove(request,id):
     
     cart = Cart.objects.get(id=id)
     cart.delete()
     return redirect("cart")
-
-
 
 def cart_plus(request,id):
     cart = Cart.objects.get(id=id)
@@ -186,8 +234,6 @@ def cart_plus(request,id):
         return redirect("cart")
     else:
         return redirect("cart")
-
-
 
 def cart_minus(request,id):
     cart = Cart.objects.get(id=id)
@@ -199,11 +245,9 @@ def cart_minus(request,id):
         return redirect("cart")
     else:
         return redirect("cart")
-
-
-       
-        
+    
 def address(request):
+    cat = SubCategoryModel.objects.all()
     form = AddressForm()
     if request.method == "POST":
         form = AddressForm(request.POST)
@@ -216,9 +260,8 @@ def address(request):
             return redirect("address")
     else:
         pass
-    con = {'form':form}
+    con = {'form':form,'cat':cat}
     return render(request,"address.html",con)            
-
 
 def categorybox(request,id):
     single_prod = ProductModel.objects.get(id=id)
@@ -235,14 +278,16 @@ def about(request):
 def categorymarket(request):
     return render(request,"categorymarket.html")
     
-
 def checkout(request):
-    prod = Cart.objects.filter(user=request.user)
-    all_address = Address.objects.filter(user=request.user)
+    cat = SubCategoryModel.objects.all()
+    cart = Cart.objects.all().count()
+    prod = Cart.objects.filter(user=request.user).order_by('id')
+    count = Cart.objects.filter(user=request.user).count()
+    all_address =   Address.objects.filter(user=request.user)
     add_id=request.GET.get("add")
     list1=[]
-    sub_total=0
-    shipping_total = 0
+    sub_total=1
+    shipping_total = 1
     for x in prod:
         z=x.product.sell_price * x.quantity
         list1.append(z)
@@ -252,23 +297,55 @@ def checkout(request):
             add = Address.objects.get(id=add_id)
             prod1 = x.product
             qty = x.quantity
-
             Myorder(user = request.user,address=add,product=prod1,quantity=qty).save()
-            # return redirect("checkout")
-        else:
-            pass
+            x.delete()
+            # if cart == 0:
+            #     return redirect('order')
 
+    
 
-    con = {'all_address':all_address,'prod':prod,'sub_total':sub_total,'shipping_total':shipping_total}
+    amount = shipping_total*100 #100 here means 1 dollar,1 rupree if currency INR
+    client = razorpay.Client(auth=('rzp_test_uqhoYnBzHjbvGF','jEhBs6Qp9hMeGfq5FyU45cVi'))
+    response = client.order.create({'amount':amount,'currency':'INR','payment_capture':1})
+    print(response,"****************************************")
+    if add_id:
+        user = request.user
+        subject = 'welcome to Mobile Shop'
+        message = f'Hi {user}, Thank you for Shopping.'
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [request.user.email]
+        send_mail( subject, message, email_from, recipient_list )
+        return redirect('order')
+
+    con = {'all_address':all_address,'prod':prod,'sub_total':sub_total,'shipping_total':shipping_total,'response':response,'cat':cat,'count':count}
     return render(request,"checkout.html",con)
 
+def searchview(request):
+    srch = request.GET.get("srch")
+    if srch:
+        prod = ProductModel.objects.filter(name__contains=srch)
+
+    con = {'all_prod':prod}
+    return render(request,"category.html",con)
 
 def order(request):
+    cat = SubCategoryModel.objects.all()
     if request.user.is_authenticated:
         ord = Myorder.objects.filter(user=request.user)
+        list1 = []
+        sub_total = 1
+        shipping_total = 1
+        status = "pending"
+        for x in ord:
+            z = x.product.sell_price * x.quantity
+            list1.append(z)
+            sub_total = sum(list1)
+            shipping_total = sub_total + 70
+            
+            if status == "confirm order":
+                messages.success(request,'😃 Contact Successfully Submitted')
 
-    con = {'ord':ord}
-    return render(request,"order.html",con)
-
-
-
+        con = {'ord':ord,'sub_total':sub_total,'shipping_total':shipping_total,'cat':cat}
+        return render(request,"order.html",con)
+    else:
+        return redirect("login")    

@@ -83,6 +83,16 @@ class Address(models.Model):
         return self.name
 
 
+class Contact(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    email = models.EmailField(max_length=200)
+    phone_number = models.IntegerField()
+    subject = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name        
+
+
 Status = (
             ("Order Accepted","Order Accepted"),
             ("confirm order","confirm order")

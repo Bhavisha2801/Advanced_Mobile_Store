@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm,PasswordChangeForm,UserChangeForm,SetPasswordForm,PasswordResetForm
 from django.contrib.auth.models import User
 
-from .models import Address
+from .models import Address, Contact
 
 
 class UserCreateForm(UserCreationForm):
@@ -73,3 +73,19 @@ class AddressForm(forms.ModelForm):
         'city':forms.TextInput(attrs={'class':'form-control','placeholder':'Enter City'}),
 
     }
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['name','email','phone_number','subject']   
+        widgets = {
+            
+        'name':forms.TextInput(attrs={'class':'form-control','placeholder':'Enter First name'}),
+
+        'email':forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Email'}),
+
+        'phone_number':forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Phone Number'}),
+
+        'subject':forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Subject'}),
+
+    } 

@@ -57,6 +57,8 @@ urlpatterns = [
     path('cart_minus/<int:id>',views.cart_minus,name="cart_minus"),
     path("address/",views.address,name="address"),
     path("order/",views.order,name="order"),
+    path("searchview/",views.searchview,name="searchview"),
+
 
     #Password Reset
     path("password-reset/", auth_views.PasswordResetView.as_view(template_name='password_reset.html',form_class=PassResetForm), name="password_reset"),

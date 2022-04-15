@@ -27,7 +27,7 @@ checkout
             					<label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
             				</form>
             			</div><!-- End .checkout-discount -->
-            			<form action="#">
+            			<form action="/checkout/">
 		                	<div class="row">
 		                		
 		                		<aside class="col-lg-3" style="margin-left:auto;margin-right:auto;">
@@ -64,7 +64,7 @@ checkout
 		                					</tbody>
 		                				</table><!-- End .table table-summary -->
 
-		                				<div class="accordion-summary" id="accordion-payment">
+		                				{% comment %} <div class="accordion-summary" id="accordion-payment">
 										    <div class="card">
 										        <div class="card-header" id="heading-1">
 										            <h2 class="card-title">
@@ -138,7 +138,7 @@ checkout
 										            </div><!-- End .card-body -->
 										        </div><!-- End .collapse -->
 										    </div><!-- End .card -->
-										</div><!-- End .accordion -->
+										</div><!-- End .accordion --> {% endcomment %}
 
 
 		                			</div><!-- End .summary -->
@@ -172,7 +172,17 @@ checkout
                                     <span class="btn-hover-text">Proceed to Checkout</span>
                                 </button>
 
+
+
 		                	</div><!-- End .row -->
+
+
+                            <script src="https://checkout.razorpay.com/v1/checkout.js" data-key="rzp_test_uqhoYnBzHjbvGF"
+                            data-amount={{response.amount}} data-currency={{response.currency}} data-order_id={{response.id}}
+                            data-buttontext="Pay with Razorpay" data-name="{{request.user}}" data-description="" data-image=""
+                            data-prefill.name={{request.user.username}} data-prefill.email={{request.user.email}};
+                            data-theme.color="#F37254"></script>
+                            <input type="hidden" custom="Hidden Element" name="hidden">
             			</form> 
 	                </div><!-- End .container -->
                 </div><!-- End .checkout -->
@@ -180,7 +190,7 @@ checkout
         </main><!-- End .main -->
                                 <ul style="display:flex;gap:10%;justify-content:center;">
                                     <li style="border:2px solid orange;padding:1%"><a href={% url 'cart' %}>My Wishlist</a></li>
-	            					<li style="border:2px solid orange;padding:1%"><a href="#">Track My Order</a></li>
+	            					<li style="border:2px solid orange;padding:1%"><a href="/order">Track My Order</a></li>
 	            					<li style="border:2px solid orange;padding:1%"><a href="#">Help</a></li>
 	            				</ul><!-- End .widget-list -->
 	            			</div><!-- End .widget -->
