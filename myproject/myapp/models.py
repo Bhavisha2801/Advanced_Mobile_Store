@@ -107,7 +107,8 @@ class Myorder(models.Model):
     status = models.CharField(max_length=25,choices=Status,default="pending")
     def _str_(self):
         return self.user.username
-
+    def total(self):
+        return ((self.product.sell_price)*(self.quantity))  
 
    
 

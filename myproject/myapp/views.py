@@ -177,7 +177,7 @@ def contact(request):
             x = form.save(commit=False)
             x.user = request.user
             x.save()
-            messages.success(request,'😃 Contact Successfully Submitted')
+            messages.success(request,'😃 Contact Successfully Saved')
             return redirect("contact")
         else:
             return redirect("contact")   
@@ -220,8 +220,7 @@ def Add_to_cart(request,id):
     else:
         return redirect("login")
 
-def cart_remove(request,id):
-    
+def cart_remove(request,id): 
     cart = Cart.objects.get(id=id)
     cart.delete()
     return redirect("cart")
@@ -262,6 +261,28 @@ def address(request):
         pass
     con = {'form':form,'cat':cat}
     return render(request,"address.html",con)            
+
+def address_remove(request,id): 
+    address = Address.objects.get(id=id)
+    address.delete()
+    return redirect("checkout")
+
+def address_edit(request,id):
+    data = Address.objects.get(id=id)
+    if request.method == "POST":
+        form = AddressForm(request.POST,instance=data)
+        if form.is_valid():
+            x = form.save(commit=False)
+            x.user = request.user
+            x.save()
+            return redirect("checkout")
+        else:
+            return redirect("address")
+    else:
+        form = AddressForm(instance=data)
+    con = {'form':form}
+    return render(request,"address.html",con)
+        
 
 def categorybox(request,id):
     single_prod = ProductModel.objects.get(id=id)
@@ -339,13 +360,15 @@ def order(request):
         for x in ord:
             z = x.product.sell_price * x.quantity
             list1.append(z)
+            print(z,"aaaaaddddddddddddddddddddddddddddddddddd")
+            print(list1,"aaaaaaaaaaaaaaaaaaaaaaaaaaaa")
             sub_total = sum(list1)
             shipping_total = sub_total + 70
             
             if status == "confirm order":
                 messages.success(request,'😃 Contact Successfully Submitted')
 
-        con = {'ord':ord,'sub_total':sub_total,'shipping_total':shipping_total,'cat':cat}
-        return render(request,"order.html",con)
-    else:
-        return redirect("login")    
+    con = {'ord':ord,'sub_total':sub_total,'shipping_total':shipping_total,'cat':cat,'z':z}
+    return render(request,"order.html",con)
+    # else:
+    #     return redirect("login")    

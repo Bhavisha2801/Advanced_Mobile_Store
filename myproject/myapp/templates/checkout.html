@@ -161,7 +161,16 @@ checkout
                                                     <p class="gray">{{x.address}}</p>
                                                 </div>
                                             </li>
-                                            <br />
+                                            <li class="remove-col" style="display:flex;gap:10%">
+                                                <div class="direct-transfer-msg" style="margin-left:20px;">
+                                                <a href="{% url 'address_remove' x.id %}" class="btn-remove">Remove Address</a>
+                                                </div>
+                                                <div class="direct-transfer-msg" style="margin-left:20px;">
+                                                    <a href="{% url 'address_edit' x.id %}" class="btn-remove">Edit Address</a>
+                                                </div>
+                                                
+                                            </li>  
+                                            <br />  
                                             {% endfor %}
                                         </ul>
                                     </div>
