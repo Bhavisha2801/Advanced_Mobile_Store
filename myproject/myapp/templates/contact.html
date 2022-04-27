@@ -3,18 +3,14 @@
 {% load static %}
 
 {% block title  %}
-contact
+contact info
 {% endblock title  %}
 
 {% block body  %}
-
-
-            </div><!-- End .container -->
-
             <div class="page-content pb-0">
                 <div class="container">
                 	<div class="row">
-                		<div class="col-lg-6 mb-2 mb-lg-0">
+                		{% comment %} <div class="col-lg-6 mb-2 mb-lg-0">
                 			<h2 class="title mb-1">Contact Information</h2><!-- End .title mb-2 -->
                 			<p class="mb-3">Vestibulum volutpat, lacus a ultrices sagittis, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna.</p>
                 			<div class="row">
@@ -56,50 +52,55 @@ contact
                 					</div><!-- End .contact-info -->
                 				</div><!-- End .col-sm-5 -->
                 			</div><!-- End .row -->
-                		</div><!-- End .col-lg-6 -->
+                		</div><!-- End .col-lg-6 --> {% endcomment %}
+						<div id="map" class="col-lg-6 mb-2 mb-lg-0" style="background-color:white;">
+							<div class="mapouter"><div class="gmap_canvas" style="width:100%;"><iframe width="500" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=ahmedabad%20maxgen%20technology&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://www.embedgooglemap.net/blog/divi-discount-code-elegant-themes-coupon/"></a><br><style>.mapouter{position:relative;text-align:right;height:500px;width:100;}</style><a href="https://www.embedgooglemap.net">custom google map for website</a><style>.gmap_canvas {overflow:hidden;background:none!important;height:500px;width:600px;}</style></div></div>
+						</div><!-- End #map -->
                 		<div class="col-lg-6">
                 			<h2 class="title mb-1">Got Any Questions?</h2><!-- End .title mb-2 -->
                 			<p class="mb-2">Use the form below to get in touch with the sales team</p>
 
-                			<form action="#" class="contact-form mb-3">
+                			<form action="#" method = "POST" class="contact-form mb-3">
                 				<div class="row">
-                					<div class="col-sm-6">
-                                        <label for="cname" class="sr-only">Name</label>
-                						<input type="text" class="form-control" id="cname" placeholder="Name *" required>
-                					</div><!-- End .col-sm-6 -->
+                					<div class="col-lg-9">
+                                        <div class="row">
+											
+											{% if messages %}
+											{% for message in messages %}
+											<div class="container-fluid p-0">
+											<div class="alert {{ message.tags }} alert-dismissible" role="alert">
+												<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="True">&times;</span>
+												</button>
+													{{ message }}
+											</div>
+										</div>
+									{% endfor %}
+									{% endif %}
 
-                					<div class="col-sm-6">
-                                        <label for="cemail" class="sr-only">Email</label>
-                						<input type="email" class="form-control" id="cemail" placeholder="Email *" required>
-                					</div><!-- End .col-sm-6 -->
-                				</div><!-- End .row -->
 
-                				<div class="row">
-                					<div class="col-sm-6">
-                                        <label for="cphone" class="sr-only">Phone</label>
-                						<input type="tel" class="form-control" id="cphone" placeholder="Phone">
-                					</div><!-- End .col-sm-6 -->
-
-                					<div class="col-sm-6">
-                                        <label for="csubject" class="sr-only">Subject</label>
-                						<input type="text" class="form-control" id="csubject" placeholder="Subject">
-                					</div><!-- End .col-sm-6 -->
-                				</div><!-- End .row -->
-
-                                <label for="cmessage" class="sr-only">Message</label>
-                				<textarea class="form-control" cols="30" rows="4" id="cmessage" required placeholder="Message *"></textarea>
-
-                				<button type="submit" class="btn btn-outline-primary-2 btn-minwidth-sm">
-                					<span>SUBMIT</span>
-            						<i class="icon-long-arrow-right"></i>
-                				</button>
+                                            {% csrf_token %}
+                                            {% for x in form %}
+											
+		                					<div class="col-sm-6">
+		                						<label>{{x.label}}</label>
+                                                {{x}}
+		                					</div><!-- End .col-sm-6 -->
+                                            {% endfor %}
+		                				</div><!-- End .row -->
+                					<button type="submit" class="btn btn-outline-primary-2 btn-minwidth-sm">
+                						<span>SUBMIT</span>
+            							<i class="icon-long-arrow-right"></i>
+                					</button>
+								</div><!--End .col-lg-9-->
+								</div><!-- End .row -->
                 			</form><!-- End .contact-form -->
                 		</div><!-- End .col-lg-6 -->
                 	</div><!-- End .row -->
 
                 	<hr class="mt-4 mb-5">
 
-                	<div class="stores mb-4 mb-lg-5">
+                	{% comment %} <div class="stores mb-4 mb-lg-5">
 	                	<h2 class="title text-center mb-3">Our Stores</h2><!-- End .title text-center mb-2 -->
 
 	                	<div class="row">
@@ -155,9 +156,8 @@ contact
 	                			</div><!-- End .store -->
 	                		</div><!-- End .col-lg-6 -->
 	                	</div><!-- End .row -->
-                	</div><!-- End .stores -->
+                	</div><!-- End .stores --> {% endcomment %}
                 </div><!-- End .container -->
-            	<div id="map"></div><!-- End #map -->
             </div><!-- End .page-content -->
         </main><!-- End .main -->
 {% endblock body %}

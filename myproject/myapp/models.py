@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import date
 
 
 # Create your models here.
@@ -83,6 +84,16 @@ class Address(models.Model):
         return self.name
 
 
+class Contact(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    email = models.EmailField(max_length=200)
+    phone_number = models.IntegerField()
+    subject = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name        
+
+
 Status = (
             ("Order Accepted","Order Accepted"),
             ("confirm order","confirm order")
@@ -94,10 +105,12 @@ class Myorder(models.Model):
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     product = models.ForeignKey(ProductModel,on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+    date = models.DateField(default=date.today)
     status = models.CharField(max_length=25,choices=Status,default="pending")
     def _str_(self):
         return self.user.username
-
+    def total(self):
+        return ((self.product.sell_price)*(self.quantity))  
 
    
 

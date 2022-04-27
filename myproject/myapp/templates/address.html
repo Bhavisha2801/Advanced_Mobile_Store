@@ -27,7 +27,7 @@ address
             			<form action="#" method="POST">
 		                	<div class="row">
 		                		<div class="col-lg-9">
-		                			<h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+		                			{% comment %} <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title --> {% endcomment %}
 		                				<div class="row">
                                             {% csrf_token %}
                                             {% for x in form %}
@@ -36,13 +36,8 @@ address
                                                 {{x}}
 		                					</div><!-- End .col-sm-6 -->
                                             {% endfor %}
-
-		                				
 		                				</div><!-- End .row -->
-
 		                				<div class="row">
-									
-
                                         <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
 		                					<span class="btn-text">Submit Address</span>
 		                					<span class="btn-hover-text">Submit Address</span>

@@ -1,6 +1,6 @@
 from csv import list_dialects
 from django.contrib import admin
-from .models import MainCategoryModel,SubCategoryModel,ProductModel,Cart,Address,Myorder
+from .models import MainCategoryModel,SubCategoryModel,ProductModel,Cart,Address,Myorder,Contact
 
 # Register your models here.
 
@@ -27,8 +27,12 @@ class CartAdmin(admin.ModelAdmin):
 class AddressAdmin(admin.ModelAdmin):
     list_display = ["name","lastname","address","phone_number","city"][::-1]
 
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ["name","email","phone_number","subject"][::-1]    
+
 
 @admin.register(Myorder)
 class MyorderAdmin(admin.ModelAdmin):
-    list_display = ["status", "quantity", "product", "address", "user"][::-1]
+    list_display = ["status", "date" , "quantity", "product", "address", "user"][::-1]
 
