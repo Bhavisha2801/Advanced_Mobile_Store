@@ -156,7 +156,7 @@
 
                                             <span class="cart-product-info">
                                                 <span class="cart-product-qty">{{x.quantity}}</span>
-                                                x {{x.total}}
+                                                x {{x.product.sell_price}}
                                             </span>
                                         </div><!-- End .product-cart-details -->
 
@@ -165,7 +165,7 @@
                                                 <img src="{{ x.product.image.url }}" alt="product">
                                             </a>
                                         </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
+                                        <a href="{% url 'cart_remove' x.id %}" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
                                     </div><!-- End .product -->
                                 </div><!-- End .cart-product -->
                                 {% endfor %}
@@ -378,109 +378,24 @@
                                         </div><!-- End .menu-col -->
                                     </div><!-- End .megamenu --> {% endcomment %}
                                 </li>
+                                {% comment %} <li>
+                                    <a href="/category" class="sf-with-ul">Shop</a>
+                                </li> {% endcomment %}
+
+
                                 <li>
                                     <a href="/category" class="sf-with-ul">Shop</a>
 
-                                    {% comment %} <div class="megamenu megamenu-md">
-                                        <div class="row no-gutters">
-                                            <div class="col-md-8">
-                                                <div class="menu-col">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="menu-title">Shop with sidebar</div><!-- End .menu-title -->
-                                                            <ul>
-                                                                
-                                                                <li><a href="/category">Shop Grid 3 Columns</a></li>
-                                                                
-                                                                <li><a href="/categorymarket"><span>Shop Market<span class="tip tip-new">New</span></span></a></li>
-                                                            </ul>
-
-                                                            <div class="menu-title">Shop no sidebar</div><!-- End .menu-title -->
-                                                            <ul>
-                                                                <li><a href="/categorybox"><span>Shop Boxed No Sidebar<span class="tip tip-hot">Hot</span></span></a></li>
-                                                                
-                                                            </ul>
-                                                        </div><!-- End .col-md-6 -->
-
-                                                        <div class="col-md-6">
-                                                            <div class="menu-title">Product Category</div><!-- End .menu-title -->
-                                                            <ul>
-                                                                <li><a href="/pcbox">Pcbox</a></li>
-                                                                
-                                                            </ul>
-                                                            <div class="menu-title">Shop Pages</div><!-- End .menu-title -->
-                                                            <ul>
-                                                                <li><a href="/cart">Cart</a></li>
-                                                                <li><a href="/checkout">Checkout</a></li>
-                                                                <li><a href="/wishlist">Wishlist</a></li>
-                                                                <li><a href="/dashboard">My Account</a></li>
-                                                                <li><a href="#">Lookbook</a></li>
-                                                            </ul>
-                                                        </div><!-- End .col-md-6 -->
-                                                    </div><!-- End .row -->
-                                                </div><!-- End .menu-col -->
-                                            </div><!-- End .col-md-8 -->
-
-                                            <div class="col-md-4">
-                                                <div class="banner banner-overlay">
-                                                    <a href="/category" class="banner banner-menu">
-                                                        <img src="{% static 'assets/images/menu/banner-1.jpg' %}" alt="Banner">
-
-                                                        <div class="banner-content banner-content-top">
-                                                            <div class="banner-title text-white">Last <br>Chance<br><span><strong>Sale</strong></span></div><!-- End .banner-title -->
-                                                        </div><!-- End .banner-content -->
-                                                    </a>
-                                                </div><!-- End .banner banner-overlay -->
-                                            </div><!-- End .col-md-4 -->
-                                        </div><!-- End .row -->
-                                    </div><!-- End .megamenu megamenu-md --> {% endcomment %}
-                                </li>
-                                <li>
-                                    
-
-                                    {% comment %} <div class="megamenu megamenu-sm">
-                                        <div class="row no-gutters">
-                                            <div class="col-md-6">
-                                                <div class="menu-col">
-                                                    <div class="menu-title">Product Details</div><!-- End .menu-title -->
-                                                    <ul>
-                                                        <li><a href="/product">Default</a></li>
-                                                        <li><a href="product-centered.html">Centered</a></li>
-                                                        <li><a href="product-extended.html"><span>Extended Info<span class="tip tip-new">New</span></span></a></li>
-                                                        <li><a href="product-gallery.html">Gallery</a></li>
-                                                        <li><a href="product-sticky.html">Sticky Info</a></li>
-                                                        <li><a href="product-sidebar.html">Boxed With Sidebar</a></li>
-                                                        <li><a href="product-fullwidth.html">Full Width</a></li>
-                                                        <li><a href="product-masonry.html">Masonry Sticky Info</a></li>
-                                                    </ul>
-                                                </div><!-- End .menu-col -->
-                                            </div><!-- End .col-md-6 -->
-
-                                            <div class="col-md-6">
-                                                <div class="banner banner-overlay">
-                                                    <a href="/category">
-                                                        <img src="{% static 'assets/images/menu/banner-2.jpg' %}" alt="Banner">
-
-                                                        <div class="banner-content banner-content-bottom">
-                                                            <div class="banner-title text-white">New Trends<br><span><strong>spring 2019</strong></span></div><!-- End .banner-title -->
-                                                        </div><!-- End .banner-content -->
-                                                    </a>
-                                                </div><!-- End .banner -->
-                                            </div><!-- End .col-md-6 -->
-                                        </div><!-- End .row -->
-                                    </div><!-- End .megamenu megamenu-sm --> {% endcomment %}
-                                </li>
-                                <li>
-                                    <a href="#" class="sf-with-ul">Pages</a>
-
                                     <ul>
-                                        <li>
-                                            <a href="/about" class="sf-with-ul">About</a>
-                                        </li>
-                                        <li>
-                                            <a href="/contact" class="sf-with-ul">Contact</a>
-                                        </li>
+                                    {% for x in cat %}
+                                        <li class="item-lead"><a href="{% url 'category' %}?cid={{x.id}}">{{x.name}}</a></li>
+                                        {% endfor %}
                                     </ul>
+                                </li>
+                                <li>
+                                </li>
+                                <li>
+                                    <a href="/contact" class="sf-with-ul">Contact</a>
                                 </li>
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
@@ -548,8 +463,7 @@
 	            				<ul class="widget-list">
 	            					<li><a href="{% url 'login' %}">Sign In</a></li>
 	            					<li><a href="{% url 'cart' %}">View Cart</a></li>
-	            					<li><a href="#">My Wishlist</a></li>
-	            					<li><a href="#">Track My Order</a></li>
+	            					<li><a href="{% url 'order' %}">Track My Order</a></li>
 	            					<li><a href="#">Help</a></li>
 	            				</ul><!-- End .widget-list -->
 	            			</div><!-- End .widget -->

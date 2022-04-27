@@ -34,5 +34,5 @@ class ContactAdmin(admin.ModelAdmin):
 
 @admin.register(Myorder)
 class MyorderAdmin(admin.ModelAdmin):
-    list_display = ["status", "quantity", "product", "address", "user"][::-1]
+    list_display = ["status", "date" , "quantity", "product", "address", "user"][::-1]
 

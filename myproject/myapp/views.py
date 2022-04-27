@@ -158,19 +158,34 @@ def category(request):
         list1.append(z)
         sub_total = sum(list1)
         shipping_total = sub_total + 70
-
+    
     if cid:
         all_prod = ProductModel.objects.filter(scate_id=cid)
     elif mid:
         all_prod = ProductModel.objects.filter(mcate_id=mid)    
     else:
         all_prod=ProductModel.objects.all()    
+
     con = {'all_prod':all_prod,'cat':cat,'prod':prod,'sub_total':sub_total,'shipping_total':shipping_total,'count':count,'mcate':mcate}
 
     return render(request,"category.html",con)
 
 def contact(request):
+    count = Cart.objects.filter(user=request.user).count()
+    prod = Cart.objects.filter(user=request.user).order_by('id')
+    cat = SubCategoryModel.objects.all()
+    cid=request.GET.get("cid")
+    mid = request.GET.get("mid")
+    mcate = MainCategoryModel.objects.all()
     form = ContactForm()
+    list1=[]
+    sub_total=1
+    shipping_total = 1
+    for x in prod:
+        z=x.product.sell_price * x.quantity
+        list1.append(z)
+        sub_total = sum(list1)
+        shipping_total = sub_total + 70
     if request.method == "POST":
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -183,7 +198,14 @@ def contact(request):
             return redirect("contact")   
     else:
         pass
-    con = {'form':form}         
+
+    if cid:
+        all_prod = ProductModel.objects.filter(scate_id=cid)
+    elif mid:
+        all_prod = ProductModel.objects.filter(mcate_id=mid)    
+    else:
+        all_prod=ProductModel.objects.all()    
+    con = {'form':form,'count':count,'prod':prod,'shipping_total':shipping_total,'sub_total':sub_total,'cat':cat,'all_prod':all_prod,'mcate':mcate}         
     return render(request,"contact.html",con)
 
 
@@ -198,25 +220,47 @@ def pcbox(request):
     return render(request,"pcbox.html")
 
 def product(request,id):
+    count = Cart.objects.filter(user=request.user).count()
+    prod = Cart.objects.filter(user=request.user).order_by('id')
+    cat = SubCategoryModel.objects.all()
+    cid=request.GET.get("cid")
+    mid = request.GET.get("mid")
+    mcate = MainCategoryModel.objects.all()
     single = ProductModel.objects.get(id=id)
-    con ={'single':single}
+    list1=[]
+    sub_total=1
+    shipping_total = 1
+    for x in prod:
+        z=x.product.sell_price * x.quantity
+        list1.append(z)
+        sub_total = sum(list1)
+        shipping_total = sub_total + 70
+
+    if cid:
+        all_prod = ProductModel.objects.filter(scate_id=cid)
+    elif mid:
+        all_prod = ProductModel.objects.filter(mcate_id=mid)    
+    else:
+        all_prod=ProductModel.objects.all()    
+    con = {'single':single,'count':count,'prod':prod,'shipping_total':shipping_total,'sub_total':sub_total,'cat':cat,'all_prod':all_prod,'mcate':mcate}
     
     return render(request,"product.html",con)
 
 def Add_to_cart(request,id):
     if request.user.is_authenticated:
         user = request.user
-        get_id = Cart.objects.filter(product__id = id).exists()
+        get_id = Cart.objects.filter(user=request.user,product__id = id).exists()
+        messages.success(request,'😃 Product added Successfully')
         if get_id:
-            cart = Cart.objects.get(product__id = id)
+            cart = Cart.objects.get(product__id = id) 
             if cart: 
                 cart.quantity += 1
-                cart.save()
-            return redirect("cart")
+                cart.save() 
+            return redirect("category")
         else:        
             prod = ProductModel.objects.get(id = id)
             Cart(user=user,product=prod).save()
-            return redirect("cart")
+            return redirect("category")
     else:
         return redirect("login")
 
@@ -309,6 +353,9 @@ def checkout(request):
     list1=[]
     sub_total=1
     shipping_total = 1
+    add = False
+    output = 0
+    form = AddressForm(request.POST)
     for x in prod:
         z=x.product.sell_price * x.quantity
         list1.append(z)
@@ -318,6 +365,7 @@ def checkout(request):
             add = Address.objects.get(id=add_id)
             prod1 = x.product
             qty = x.quantity
+            # output = request.form.get(id = 'direct-transfer')
             Myorder(user = request.user,address=add,product=prod1,quantity=qty).save()
             x.delete()
             # if cart == 0:
@@ -338,7 +386,7 @@ def checkout(request):
         send_mail( subject, message, email_from, recipient_list )
         return redirect('order')
 
-    con = {'all_address':all_address,'prod':prod,'sub_total':sub_total,'shipping_total':shipping_total,'response':response,'cat':cat,'count':count}
+    con = {'all_address':all_address,'prod':prod,'sub_total':sub_total,'shipping_total':shipping_total,'response':response,'cat':cat,'count':count,'add':add_id,'output':output}
     return render(request,"checkout.html",con)
 
 def searchview(request):
@@ -351,24 +399,30 @@ def searchview(request):
 
 def order(request):
     cat = SubCategoryModel.objects.all()
+    prod = Cart.objects.filter(user=request.user).order_by('id')
+    count = Cart.objects.filter(user=request.user).count()
     if request.user.is_authenticated:
         ord = Myorder.objects.filter(user=request.user)
         list1 = []
         sub_total = 1
         shipping_total = 1
         status = "pending"
+        
         for x in ord:
             z = x.product.sell_price * x.quantity
             list1.append(z)
-            print(z,"aaaaaddddddddddddddddddddddddddddddddddd")
-            print(list1,"aaaaaaaaaaaaaaaaaaaaaaaaaaaa")
             sub_total = sum(list1)
             shipping_total = sub_total + 70
             
             if status == "confirm order":
                 messages.success(request,'😃 Contact Successfully Submitted')
 
-    con = {'ord':ord,'sub_total':sub_total,'shipping_total':shipping_total,'cat':cat,'z':z}
+    con = {'ord':ord,'sub_total':sub_total,'shipping_total':shipping_total,'cat':cat,'z':z,'prod':prod,'count':count}
     return render(request,"order.html",con)
-    # else:
-    #     return redirect("login")    
+
+
+def order_remove(request,id): 
+    order = Myorder.objects.get(id=id)
+    order.delete()
+    return redirect("order")
+

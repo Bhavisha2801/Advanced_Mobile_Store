@@ -68,16 +68,15 @@ order
 									</tbody>
 								</table><!-- End .table table-wishlist --> {% endcomment %}
 
-
-
-
                                 <table class="table table-cart table-mobile">
                                     <thead>
                                         <tr>
                                             <th>Product</th>
 											<th>Quantity</th>
 											<th>Total Price</th>
-                                            <th>Status</th>
+                                            <th>Date</th>
+                                            <th>Cancellation</th>
+                                            {% comment %} <th>Status</th> {% endcomment %}
                                         </tr>
                                     </thead>
 
@@ -103,9 +102,16 @@ order
                                                 </div>
                                             </td>
                                             <td class="price-col">{{ product.total }}</td>
+                                            <td class="price-col">{{ product.date }}</td>
                                             <td class="status-col">
                                                 <span>{{product.status}}</span>
                                             </td>
+                                            {% if "confirm order" not in product.status  %}
+                                            <td class="status-col">
+                                                <button><a href="{% url 'order_remove' product.id %}">Cancel</a></button>
+                                            </td>
+                                            {% endif %}
+                                            
                                         </tr>
                                         {% endfor %}
                                     </tbody>

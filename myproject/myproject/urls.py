@@ -60,6 +60,8 @@ urlpatterns = [
     path('address_edit/<int:id>',views.address_edit,name="address_edit"),
     path("order/",views.order,name="order"),
     path("searchview/",views.searchview,name="searchview"),
+    path("order_remove/<int:id>/",views.order_remove,name="order_remove"),
+
 
 
     #Password Reset

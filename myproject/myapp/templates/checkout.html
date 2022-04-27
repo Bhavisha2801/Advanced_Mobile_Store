@@ -150,8 +150,8 @@ checkout
                                             {% for x in all_address %}
                                             <li>
                                                 <div>
-                                                    <label id="direct-transfer" for="payment_method_bacs" style="border:1px solid teal">
-                                                        <input  class="input-radio" type="radio" data-order_button_text="" name="add" value="{{x.id}}" name="payment_method">
+                                                    <label id="direct-transfer" for="payment_method_bacs" style="border:1px solid teal" >
+                                                        <input  class="input-radio" type="radio" data-order_button_text="" name="add" value="{{x.id}}" name="payment_method" required>
                                                         {{x.name}}  {{x.lastname}}
                                                     </label>
                                                 </div>
@@ -175,23 +175,27 @@ checkout
                                         </ul>
                                     </div>
                                 </aside>    
-
+                                
                                 <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
+                                    
                                     <span class="btn-text">Place Order</span>
                                     <span class="btn-hover-text">Proceed to Checkout</span>
+                                    
                                 </button>
+                                
 
 
 
 		                	</div><!-- End .row -->
 
 
-                            <script src="https://checkout.razorpay.com/v1/checkout.js" data-key="rzp_test_uqhoYnBzHjbvGF"
-                            data-amount={{response.amount}} data-currency={{response.currency}} data-order_id={{response.id}}
-                            data-buttontext="Pay with Razorpay" data-name="{{request.user}}" data-description="" data-image=""
-                            data-prefill.name={{request.user.username}} data-prefill.email={{request.user.email}};
-                            data-theme.color="#F37254"></script>
-                            <input type="hidden" custom="Hidden Element" name="hidden">
+                                <script src="https://checkout.razorpay.com/v1/checkout.js" data-key="rzp_test_uqhoYnBzHjbvGF"
+                                data-amount={{response.amount}} data-currency={{response.currency}} data-order_id={{response.id}}
+                                data-buttontext="Pay with Razorpay" data-name="{{request.user}}" data-description="" data-image=""
+                                data-prefill.name={{request.user.username}} data-prefill.email={{request.user.email}};
+                                data-theme.color="#F37254"></script>
+                                <input type="hidden" custom="Hidden Element" name="hidden">
+                            {% comment %} {% endif %} {% endcomment %}
             			</form> 
 	                </div><!-- End .container -->
                 </div><!-- End .checkout -->
