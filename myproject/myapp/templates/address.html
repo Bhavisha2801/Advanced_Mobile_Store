@@ -170,8 +170,8 @@ address
         </main><!-- End .main -->
     
         <ul style="display:flex;gap:10%;justify-content:center; margin-top:10%;">
-            <li style="border:2px solid orange;padding:1%"><a href={% url 'cart' %}>My Wishlist</a></li>
-            <li style="border:2px solid orange;padding:1%"><a href="#">Track My Order</a></li>
+            <li style="border:2px solid orange;padding:1%"><a href='/address'>Add Address</a></li>
+            <li style="border:2px solid orange;padding:1%"><a href="/order">Track My Order</a></li>
             <li style="border:2px solid orange;padding:1%"><a href="#">Help</a></li>
         </ul><!-- End .widget-list -->
 	            			</div><!-- End .widget -->
@@ -224,7 +224,7 @@ address
                           
                             <li><a href="{% url 'cart' %}">Cart</a></li>
                             <li><a href="{% url 'checkout' %}">Checkout</a></li>
-                            <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
+                            <li><a href="{% url 'wishlist' %}">Address</a></li>
                             <li><a href="#">Lookbook</a></li>
                         </ul>
                     </li>
